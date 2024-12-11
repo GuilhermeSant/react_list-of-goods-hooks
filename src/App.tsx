@@ -24,8 +24,12 @@ enum SortType {
 
 export const App: React.FC = () => {
   const [viewGoods, setViewGoods] = useState(goodsFromServer);
-  const [sortType, setSortType] = useState<SortType | null>(null); // Permite null para indicar nenhum sort aplicado
+  const [sortType, setSortType] = useState<SortType | null>(null);
   const [isReversed, setIsReversed] = useState(false);
+
+  const isSorted = !viewGoods.every(
+    (value, index) => value === goodsFromServer[index],
+  );
 
   const sortByAlphabetic = () => {
     setSortType(SortType.Alphabetically);
@@ -85,7 +89,7 @@ export const App: React.FC = () => {
           Reverse
         </button>
 
-        {viewGoods.join() !== goodsFromServer.join() && (
+        {isSorted && (
           <button
             type="button"
             className={`button is-danger${sortType !== SortType.Reset ? ' is-light' : ''}`}
